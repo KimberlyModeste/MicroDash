@@ -1,13 +1,23 @@
-import { useState, useEffect } from 'react'
-import './App.css'
-import Menubar from './components/Menubar';
-import MyCard from './components/MyCard';
-import CartComp from './components/CartComp';
+// import { useState, useEffect } from 'react'
+// import './App.css'
+// import Menubar from './components/Menubar';
+// import MyCard from './components/MyCard';
+// // import CartComp from './components/CartComp';
+// import Cart from './pages/cart';
 
 
-const API_URL = "http://localhost:3000";
+// const API_URL = "http://localhost:3000";
+import {  Routes, Route } from 'react-router';
+
+
+import Home from './pages/home';
+import Cart from './pages/cart';
+
+
 
 function App() {
+
+  /*
 
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
@@ -32,7 +42,13 @@ function App() {
     .then(setRestaurants)
     .catch(() => setMessage("Could not connect to backend."))
     .finally(()=> setLoading(false));
+
+    if((!(localStorage.getItem("myCart") === null)) && cart.length === 0)
+    {
+      setCart(JSON.parse(localStorage.getItem("myCart")));
+    }
   })
+
 
   async function onclickRestaurant(restaurant)
   {
@@ -66,16 +82,16 @@ function App() {
             cartItem
         )
       }
-      
+      localStorage.setItem("myCart", JSON.stringify([...currentCart, {...item, quantity: 1}]))
       return [...currentCart, {...item, quantity: 1}]
 
     })
+
     setMessage("");
   }
 
   function changeQuantity(itemId, amount)
   {
-    console.log(`ItemId: ${itemId}: Amount: ${amount}`)
     setCart((currentCart) =>
       currentCart
       .map((item) => 
@@ -145,134 +161,89 @@ function App() {
 
 
   if (loading) return <main className="page"><p>Loading Micro Dash...</p></main>;
+*/
+  
+return (
+  <>
+  <Routes>
+    <Route exact path="/" element = {<Home/>}/>
+    <Route exact path="/cart" element={<Cart />} />
+  </Routes>
+  </>
+    // <>
+    // <div className="app">
+    //   <Menubar passingGoHome={goHome} cart={cart} />
 
-  return (
-    <>
-    <div className="app">
-      <Menubar passingGoHome={goHome} cart={cart} />
+    //   <main className="page">
+    //     <section className="hero">
+    //       <p className="eyebrow">YOUR NEXT FAVORITE MEAL</p>
+    //       <h1>{selectedRestaurant ? selectedRestaurant.name : "Hungry for something fun?"}</h1>
+    //       <p> {selectedRestaurant? selectedRestaurant.cuisine : "Explore our one-of-a-kind restaurants and order something delicious."}</p>
 
-      <main className="page">
-        <section className="hero">
-          <p className="eyebrow">YOUR NEXT FAVORITE MEAL</p>
-          <h1>{selectedRestaurant ? selectedRestaurant.name : "Hungry for something fun?"}</h1>
-          <p> {selectedRestaurant? selectedRestaurant.cuisine : "Explore our one-of-a-kind restaurants and order something delicious."}</p>
+    //       {selectedRestaurant && (
+    //         <button className="secondary-button" onClick={goHome}>
+    //           ← All restaurants
+    //         </button>
+    //       )}
+    //     </section>
 
-          {selectedRestaurant && (
-            <button className="secondary-button" onClick={goHome}>
-              ← All restaurants
-            </button>
-          )}
-        </section>
+    //     {message && (
+    //       <div className="notice" role="status">
+    //         {message}
+    //       </div>
+    //     )}
 
-        {message && (
-          <div className="notice" role="status">
-            {message}
-          </div>
-        )}
+    //     {!selectedRestaurant ? (
+    //       <section>
+    //         <h2>Explore restaurants</h2>
+    //         <div className="restaurant-grid">
+    //           {restaurants.map((restaurant) => (
+    //             <MyCard 
+    //               key={restaurant.id} 
+    //               restaurant={restaurant}
+    //               clickRest={onclickRestaurant}
+    //               isHome={selectedRestaurant}
+    //             />
+    //           ))}
+    //         </div>
+    //       </section>
+    //     ) : (
+    //       <div className="order-layout">
+    //         <section className="menu-section">
+    //           <h2>Menu</h2>
+    //           <div className="menu-grid">
+    //             {menu.map((item) => (
+    //               <MyCard 
+    //                 key={item.id} 
+    //                 item={item}
+    //                 clickCart={addToCart}
+    //                 isHome={selectedRestaurant}
+    //               />
+    //             ))}
+    //           </div>
+    //         </section>
 
-        {!selectedRestaurant ? (
-          <section>
-            <h2>Explore restaurants</h2>
-            <div className="restaurant-grid">
-              {restaurants.map((restaurant) => (
-                <MyCard 
-                  key={restaurant.id} 
-                  restaurant={restaurant}
-                  clickRest={onclickRestaurant}
-                  isHome={selectedRestaurant}
-                />
-              ))}
-            </div>
-          </section>
-        ) : (
-          <div className="order-layout">
-            <section className="menu-section">
-              <h2>Menu</h2>
-              <div className="menu-grid">
-                {menu.map((item) => (
-                  <MyCard 
-                    key={item.id} 
-                    item={item}
-                    clickCart={addToCart}
-                    isHome={selectedRestaurant}
-                  />
-                ))}
-              </div>
-            </section>
-
-            <aside className="cart-panel">
-              <CartComp 
-                cart={cart}
-                changeQuantity={changeQuantity}
-                subtotal={subtotal}
-                delivery={deliveryFee}
-                total={total}
-                placeOrder={placeOrder}
-                ordering={ordering}
-                setAddress={setAddress} 
-                address={address} 
-                userName={userName} 
-                setUserName={setUserName}
-              />
-{/* 
-              {cart.length === 0 ? (
-                <p className="muted">Your cart is empty. Add something tasty!</p>
-              ) : (
-                <>
-                  {cart.map((item) => (
-                    <div className="cart-item" key={item.id}>
-                      <div>
-                        <strong>{item.name}</strong>
-                        <p>${((item.price * item.quantity) / 100).toFixed(2)}</p>
-                      </div>
-                      <div className="quantity-controls">
-                        <button
-                          aria-label={`Remove one ${item.name}`}
-                          onClick={() => changeQuantity(item.id, -1)}
-                        >
-                          −
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button
-                          aria-label={`Add one ${item.name}`}
-                          onClick={() => changeQuantity(item.id, 1)}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="totals">
-                    <p><span>Estimated tax</span><span>${(tax / 100).toFixed(2)}</span></p> 
-                    <p><span>Subtotal</span><span>${(subtotal / 100).toFixed(2)}</span></p>
-                    <p><span>Delivery</span><span>${(deliveryFee / 100).toFixed(2)}</span></p>
-                    <p className="grand-total"><span>Total</span><span>${(total / 100).toFixed(2)}</span></p>
-                  </div>
-
-                  <form onSubmit={placeOrder}>
-                    <label htmlFor="address">Delivery address</label>
-                    <textarea
-                      id="address"
-                      value={address}
-                      onChange={(event) => setAddress(event.target.value)}
-                      placeholder="Enter your delivery address"
-                      required
-                    />
-                    <button className="checkout-button" disabled={ordering}>
-                      {ordering ? "Placing order..." : "Place order"}
-                    </button>
-                  </form>
-                </>
-              )} */}
-            </aside>
-          </div>
-        )}
-      </main>
-
-      <footer>Micro Dash · A class project</footer>
-    </div>
-    </>
+    //         <aside className="cart-panel">
+    //           <Cart 
+    //             cart={cart}
+    //             changeQuantity={changeQuantity}
+    //             subtotal={subtotal}
+    //             delivery={deliveryFee}
+    //             total={total}
+    //             placeOrder={placeOrder}
+    //             ordering={ordering}
+    //             setAddress={setAddress} 
+    //             address={address} 
+    //             userName={userName} 
+    //             setUserName={setUserName}
+    //           />
+    //         </aside>
+    //       </div>
+    //     )}
+    //   </main>
+    //   <footer>Micro Dash · A class project</footer>
+    // </div>
+    // </>
   )
 }
 

@@ -18,28 +18,28 @@ const restaurants  = [
   cuisine: "Cozy Meals",
   openingHours: "11:00 AM - 10:00 PM",
   averagePrepTimeMinutes: 25,
-  image: "wyvern-stew.jpg",
+  image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/wyvern-stew.jpg",
   menu: [
   {
       id: "101",
       name: "Wyvern Beef Stew",
       description: "A hearty fantasy-inspired stew featuring tender beef, potatoes, carrots, and savory herbs simmered in a rich broth. Perfect for adventurers returning from a long quest.",
       price: 1699,
-      image: "./resources/wyvern-stew.jpg"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/wyvern-stew.jpg"
   },
   {
       id: "102",
       name: "Roast Dragon Steak",
       description: "A legendary feast inspired by dragon hunting, featuring a thick, flame-grilled steak seasoned with aromatic herbs and served with roasted vegetables.",
       price: 2499,
-      image: "./resources/roasted-dragon.png"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/roasted-dragon.png"
   },
   {
       id: "103",
       name: "Horn-Bull Gyudon",
       description: "A comforting bowl of Japanese rice topped with thinly sliced beef and sweet onions simmered in a savory soy-based sauce. Inspired by the hearty meals of a fantasy adventurer.",
       price: 1499,
-      image: "./resources/Gyudon.png"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/Gyudon.png"
   }]
 },
 {
@@ -48,28 +48,28 @@ const restaurants  = [
   cuisine: "Pirate-Inspired Japanese",
   openingHours: "10:00 AM - 11:00 PM",
   averagePrepTimeMinutes: 20,
-  image: "https://prtimes.jp/i/7303/565/resize/d7303-565-286836-1.jpg",
+  image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/luffy-bone.png",
   menu: [
     {
       id: "201",
       name: "Luffy's Meat on the Bone",
       description: "A pirate captain's dream meal: a generous serving of juicy roasted meat on the bone, seasoned with spices and cooked until tender. Big enough to satisfy a hungry adventurer.",
       price: 1999,
-      image: "./resources/luffy-bone.png"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/luffy-bone.png"
     },
     {
       id: "202",
       name: "Gin's Takeout Stir-Fry",
       description: "A quick and satisfying stir-fried rice dish with egg, colorful vegetables, and savory seasonings. A simple, filling meal for pirates on the move.",
       price: 1299,
-      image: "./resources/gins-stirfry.png"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/gins-stirfry.png"
     },
     {
       id: "203",
       name: "Desert Trekker's Bento",
       description: "A portable Japanese lunchbox containing seasoned rice, vegetables, and a savory main dish. Designed for a crew exploring distant islands and crossing scorching deserts.",
       price: 1399,
-      image: "./resources/Deserts-bento.png" 
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/Deserts-bento.png" 
 
     }
   ]
@@ -80,28 +80,28 @@ const restaurants  = [
   cuisine: "Pokemon Cafe",
   openingHours: "9:00 AM - 8:00 PM",
   averagePrepTimeMinutes: 15,
-  image: "https://assets.tmecosys.com/image/upload/t_web_rdp_recipe_584x480_1_5x/img/recipe/ras/Assets/f2e5d8c0-429d-4e9d-965b-24d9c027e243/Derivates/2106dcd7-c4b0-46dd-baaa-245e70b6a314.jpg",
+  image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/pikachu-curry.png",
   menu: [
     {
       id: "301",
       name: "Pikachu Curry Rice",
       description: "A cheerful Japanese curry served with fluffy rice shaped into a Pikachu-inspired face. The mildly spiced curry and colorful vegetable toppings make this a fun café favorite.",
       price: 1399,
-      image: "./resources/pikachu-curry.png"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/pikachu-curry.png"
     },
     {
       id: "302",
       name: "Spinda Raspberry Marble Cake",
       description: "A soft, sweet cake swirled with raspberry flavor and decorated with a playful spotted pattern inspired by Spinda. A delightful dessert for Pokémon trainers and cake lovers.",
       price: 799,
-      image: "./resources/spinda-cake.png"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/spinda-cake.png"
     },
     {
       id: "303",
       name: "Dragonite's Butternut Gnocchi",
       description: "Tender potato gnocchi paired with sweet roasted butternut squash and a creamy, savory sauce. A comforting autumn-inspired dish worthy of a friendly Dragonite.",
       price: 1599,
-      image: "./resources/Butternut-gnocchi.jpg"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/Butternut-gnocchi.jpg"
     }
   ]
 },
@@ -111,28 +111,28 @@ const restaurants  = [
   cuisine: "Japanese Comfort Food",
   openingHours: "11:00 AM - 9:00 PM",
   averagePrepTimeMinutes: 20,
-  image: "https://media.vogue.fr/photos/628b92e8e8c7d38234b4b875/3%3A2/w_4796%2Ch_3197%2Cc_limit/GG_GHIBLI_PonyoSurLaFalaise_ShioRamenDesRetrouvailles_HD.jpg",
+  image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/ponyo-ramen.jpg",
   menu: [
     {
       id: "401",
       name: "Ponyo's Shio Ramen",
       description: "A comforting bowl of Japanese salt-based ramen with warm broth, noodles, ham, egg, and sliced green onions. A simple, nostalgic meal inspired by Ponyo's love of ramen.",
       price: 1499,
-      image: "./resources/ponyo-ramen.jpg"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/ponyo-ramen.jpg"
     },
     {
       id: "402",
       name: "Satsuki's Bento",
       description: "A lovingly prepared Japanese lunchbox featuring steamed rice, grilled fish, colorful vegetables, and traditional side dishes. A wholesome homemade-style meal inspired by My Neighbor Totoro.",
       price: 1299,
-      image: "./resources/satsuki-bento.png"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/satsuki-bento.png"
     },
     {
       id: "403",
       name: "Kiki's Chocolate Cake",
       description: "A rich chocolate cake with a smooth chocolate ganache topping. This comforting dessert is perfect for enjoying with a cup of tea after a busy day of deliveries.",
       price: 899,
-      image: "./resources/kiki-chocolate-cake.jpg"
+      image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/kiki-chocolate-cake.jpg"
     }
   ]
 },

@@ -1,6 +1,6 @@
-// import { goHome, cart } from '../App'
-import '../App.css'
 import PropTypes from 'prop-types';
+import { Menu, Icon, Label } from 'semantic-ui-react';
+import {Link, useNavigate} from 'react-router-dom';
 
 Menubar.propTypes = {
   passingGoHome: PropTypes.func.isRequired, 
@@ -11,16 +11,32 @@ Menubar.propTypes = {
   ).isRequired,
 };
 
-function Menubar({passingGoHome, cart}) {
+function Menubar({ cart}) {
+  const navigate = useNavigate(); 
+
+
   return (
 	<div>
 	  <header className="topbar">
-        <button className="brand" onClick={passingGoHome}>
-          🍔 Micro Dash
-        </button>
-        <span>Food out of this world, straight to your hands.</span>
-        <div className="cart-count">🛒 {cart.reduce((n, item) => n + item.quantity, 0)}</div>
-      </header>
+      <button className="brand" onClick={()=> navigate('/')}>
+        🍔 Micro Dash
+      </button>
+      <span className='title'>Food out of this world, straight to your hands.</span>
+      {/* <div className="cart-count">🛒 {cart.reduce((n, item) => n + item.quantity, 0)}</div> */}
+      <div>
+        <Menu compact className='cart-w-notif'  as={Link} to="/cart">
+          <Menu.Item style={{ position: 'relative' }}>
+            <Icon name='shopping cart' size='large' />
+            {cart.reduce((n, item) => n + item.quantity, 0) > 0 && (
+              <Label color='red' floating circular size='mini'>
+                {cart.reduce((n, item) => n + item.quantity, 0)}
+              </Label>
+            )}
+            Cart
+          </Menu.Item>
+        </Menu>
+      </div>
+    </header>
 	</div>
   )
 }
