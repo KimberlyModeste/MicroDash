@@ -12,7 +12,8 @@ CartComp.propTypes = {
   setAddress: PropTypes.string, 
   address: PropTypes.string, 
   userName: PropTypes.string, 
-  setUserName: PropTypes.string
+  setUserName: PropTypes.string,
+
 };
 
 function CartComp({cart, changeQuantity, subtotal, delivery, total, placeOrder, ordering, setAddress, address, userName, setUserName}) {

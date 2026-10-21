@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Menu, Icon, Label } from 'semantic-ui-react';
 import {Link, useNavigate} from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 Menubar.propTypes = {
   passingGoHome: PropTypes.func.isRequired, 
@@ -11,8 +12,18 @@ Menubar.propTypes = {
   ).isRequired,
 };
 
-function Menubar({ cart}) {
-  const navigate = useNavigate(); 
+function Menubar() {
+  const navigate = useNavigate();
+  const[cart, setCart] = useState([])
+
+  useEffect(() =>{
+    // localStorage.clear()
+    if((!(localStorage.getItem("myCart") === null)) && cart.length === 0)
+		{
+      
+      setCart(JSON.parse(localStorage.getItem("myCart")));
+		}
+  }, [cart.length])
 
 
   return (

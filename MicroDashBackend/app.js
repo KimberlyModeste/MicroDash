@@ -142,7 +142,7 @@ const restaurants  = [
   cuisine: "Tavern food",
   openingHours: "11:00 AM - 11:00 PM",
   avgPrepTime: 30,
-  image: "https://twentysidedstore.com/cdn/shop/products/IMG_8684_700x700.jpg?v=1605219831",
+  image: "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/laumberryPie.jpg",
   menu: [
     {
       id: "501",
@@ -151,7 +151,7 @@ const restaurants  = [
       description:
         "A rustic, golden-crusted berry pie filled with sweet and tart woodland berries. A favorite among travelers who need a little taste of home after a long adventure.",
       image:
-        "https://twentysidedstore.com/cdn/shop/products/IMG_8684_700x700.jpg?v=1605219831"
+        "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/laumberryPie.jpg"
     },
     {
       id: "502",
@@ -160,7 +160,7 @@ const restaurants  = [
       description:
         "Delicate, golden star-shaped pastries with a rich, sweet filling. These celestial treats are perfect for celebrating a successful quest or a lucky roll.",
       image:
-        "https://twincitiesgeek.com/wp-content/uploads/2024/06/Goldenstars-Heroes-Feast.jpg"
+        "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/goldstars.jpg"
     },
     {
       id: "503",
@@ -169,7 +169,7 @@ const restaurants  = [
       description:
         "A bubbling bowl of creamy, extra-cheesy pasta seasoned with paprika, garlic, and a hint of cayenne, finished with a crunchy golden breadcrumb topping. A chaotic but delicious Kender classic.",
       image:
-        "https://images.unsplash.com/photo-1543339494-b4cd4f7ba686?auto=format&fit=crop&w=900&q=80"
+        "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/stumblenoodles.jpg"
     },
     {
       id: "504",
@@ -178,7 +178,7 @@ const restaurants  = [
       description:
         "A fiery-looking tavern punch blending cranberry, orange, pineapple, and lemon with a sparkling finish. Served chilled with an orange garnish. This traditional version contains alcohol.",
       image:
-        "https://images.unsplash.com/photo-1536935338788846bb9981813?auto=format&fit=crop&w=900&q=80"
+        "https://raw.githubusercontent.com/KimberlyModeste/MicroDash/refs/heads/master/MicroDashBackend/resources/DragonFirePunch.jpg"
     }
   ]
 }
@@ -209,6 +209,9 @@ app.get("/restaurants/:id/menu", (req, res) => {
   res.json({
     restaurantId: restaurant.id,
     restaurantName: restaurant.name,
+    restaurantCuisine: restaurant.cuisine,
+    restaurantOpeningHours: restaurant.openingHours,
+    restaurantAverage: restaurant.avgPrepTime,
     menu: restaurant.menu
   });
 })

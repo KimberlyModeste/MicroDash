@@ -7,19 +7,8 @@ import Menubar from '../components/Menubar';
 
 Cart.propTypes = {
   API_URL: PropTypes.string,
-  cart: PropTypes.object,
-  changeQuantity: PropTypes.func,
-  ordering: PropTypes.func,
-  placeOrder: PropTypes.func,
-  subtotal: PropTypes.number,
-  delivery: PropTypes.number,
-  total: PropTypes.number,
-  setAddress: PropTypes.string, 
-  address: PropTypes.string, 
-  userName: PropTypes.string, 
-  setUserName: PropTypes.string
 };
-// {cart, changeQuantity, subtotal, delivery, total, placeOrder, ordering, setAddress, address, userName, setUserName}
+
 function Cart({API_URL}) {
   const [cart, setCart] = useState([]);
   const [address, setAddress] = useState("");
@@ -39,7 +28,7 @@ function Cart({API_URL}) {
     {
       setCart(JSON.parse(localStorage.getItem("myCart")));
     }
-  })
+  }, [cart.length])
 
     
   function changeQuantity(itemId, amount)

@@ -7,3 +7,6 @@ Created a simple display with cgpt.
 	- Turned Menubar, Cart and Cards into components
 	- Had to update the generated cards (fixed size and images)
 	- The quantity button was broken so it needed to be fixed 
+	- Created pages for cart, Home and menu leaving app.jsx for routing
+
+
