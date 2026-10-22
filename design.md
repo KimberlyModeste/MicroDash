@@ -8,5 +8,8 @@ Created a simple display with cgpt.
 	- Had to update the generated cards (fixed size and images)
 	- The quantity button was broken so it needed to be fixed 
 	- Created pages for cart, Home and menu leaving app.jsx for routing
+	- Updated the cart with new UI and added a radio button for scheduling
 
+Created a game plan for the implementation of the schedule function.
+	- Changed the parameters given by the ai to remove the part about if the schedule is blank run it like a normal order
 

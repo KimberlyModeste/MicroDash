@@ -224,7 +224,7 @@ let nextOrderId = 1;
 
 // POST /orders
 app.post("/orders", (req, res) =>{
-  const {restaurantId, items, deliveryAddress, name} = req.body;
+  const {restaurantId, items, deliveryAddress, name, scheduledDeliveryTime} = req.body;
 
   if(
     !restaurantId ||
@@ -235,7 +235,10 @@ app.post("/orders", (req, res) =>{
     !deliveryAddress.trim() ||
     !name ||
     typeof name !== "string" ||
-    !name.trim()
+    !name.trim() ||
+    !scheduledDeliveryTime ||
+    typeof scheduledDeliveryTime !== "string" ||
+    !scheduledDeliveryTime.trim()
   )
   {
     return res.status(400).json({
@@ -340,7 +343,8 @@ app.patch("/orders/:id/status", (req, res)=> {
     "ready_for_pickup",
     "picked_up",
     "delivered",
-    "cancelled"
+    "cancelled",
+    "scheduled"
   ]
 
   const { status } = req.body;

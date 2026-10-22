@@ -1,7 +1,6 @@
 import { Item, Sidebar, Button, Container } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
-import { useEffect } from 'react';
 
 
 
@@ -41,10 +40,10 @@ function SidebarCart({cart, isVisible, removeFromCart, changeVisibility}) {
           </Container>
         </Item>
       ))}
-      <Button onClick={()=>navigate('/cart')}>
+      <Button className='checkout-button checkout' onClick={()=>navigate('/cart')}>
         Checkout
       </Button>
-      <Button onClick={() =>navigate('/cart')}>
+      <Button className='checkout-button edit' onClick={() =>navigate('/cart')}>
         Edit cart
       </Button>
     </Sidebar>

@@ -137,6 +137,10 @@ button:disabled {
   background: #c94825;
 }
 
+.checkout-button.checkout:hover {
+  background: #c94825 !important;
+}
+
 .muted {
   color: #766d64;
   font-size: 0.9rem;
@@ -239,6 +243,14 @@ button:disabled {
   margin-top: 12px;
 }
 
+.checkout-button.checkout{
+  background: #e85d35 !important;
+  color: white !important;
+  margin-bottom: 10px !important;
+  margin-top: 10px !important;
+}
+
+
 .notice {
   margin: 20px 0;
   padding: 14px 18px;
@@ -295,6 +307,10 @@ footer {
   box-shadow: none !important;
 }
 
+.cart-menu{
+  margin: 5%;
+}
+
 .sidebar-cart{
   display: contents;
 }
@@ -303,6 +319,10 @@ footer {
   height: 50px;
 }
 
+.center-quantity
+{
+  padding: 0px;
+}
 
 
 .title{

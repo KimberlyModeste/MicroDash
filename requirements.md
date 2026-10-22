@@ -31,7 +31,7 @@ As a customer, I want to schedule an order for future delivery so that I can pla
 3. A delivery time exactly 7 days after T is accepted.
 4. A delivery time more than 7 days after T is rejected.
 5. A delivery time equal to or earlier than T is rejected.
-6. A missing scheduled delivery time is treated as an immediate order, not as a validation failure.
+#### 6. A missing scheduled delivery time is treated as an immediate order, not as a validation failure. ####
 7. An unparseable or invalid date/time is rejected with HTTP 400 and a clear error message.
 8. Validation uses the injected clock, not the machine's real system time.
 

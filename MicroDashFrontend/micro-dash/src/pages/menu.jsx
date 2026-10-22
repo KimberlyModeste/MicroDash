@@ -19,7 +19,7 @@ function Menu({API_URL}) {
   const [menu, setMenu] = useState(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null)
 	const [loading, setLoading] = useState(true);
-	const [isVisible, setVisible] = useState(true);
+	const [isVisible, setVisible] = useState(false);
 	const [cart, setCart] = useState([]);
 	const [message, setMessage] = useState("");
     
@@ -88,7 +88,6 @@ function Menu({API_URL}) {
     <Menubar />
     <main className="page">
       <FaveMealComp selectedRestaurant={selectedRestaurant} message={message} />        
-      
       <div className="order-layout">
         <section className="menu-section">
           <h2>Menu</h2>
@@ -105,20 +104,6 @@ function Menu({API_URL}) {
         </section>
   	    <aside  className={`${isVisible ? '' : 'isInvisible'} cart-panel`}  >
       <SidebarCart cart={cart} isVisible={isVisible} changeVisibility={changeVisibility} removeFromCart={removeFromCart}/>
-
-       {/*<Cart 
-      cart={cart}
-      changeQuantity={changeQuantity}
-      subtotal={subtotal}
-      delivery={deliveryFee}
-      total={total}
-      placeOrder={placeOrder}
-      ordering={ordering}
-      setAddress={setAddress} 
-      address={address} 
-      userName={userName} 
-      setUserName={setUserName}
-      />*/}
     </aside> 
       </div>
     </main>
