@@ -9,6 +9,8 @@ const path = require("path")
 app.use('/resources', express.static(path.join(__dirname, 'resources')));
 
 const PORT = 3000;
+const { createScheduledOrderService } =  require("./scheduledOrderService");
+
 
 // restaurants 
 const restaurants  = [
@@ -199,6 +201,19 @@ app.get("/restaurants/:id/menu", (req, res) => {
     (r) => r.id === req.params.id
   );
 
+// GET /Restaurants/:id/orders
+app.get("/Restaurants/:id/orders", (req, res) => {
+  const placedOrders = orders.filter(
+    (order) =>{
+      // order.restaurantId === req.params.id &&
+      // order.status === "placed"
+      order.status !== "scheduled" &&
+      order.status !== "cancelled"
+    }
+  )
+  res.json(placedOrders);
+})
+
   if(!restaurant)
   {
     return res.status(404).json({
@@ -224,10 +239,10 @@ let nextOrderId = 1;
 
 // POST /orders
 app.post("/orders", (req, res) =>{
-  const {restaurantId, items, deliveryAddress, name, scheduledDeliveryTime} = req.body;
+  const {items, deliveryAddress, name, scheduledDeliveryTime} = req.body;
 
   if(
-    !restaurantId ||
+    // !restaurantId ||
     !Array.isArray(items) ||
     items.length === 0 ||
     !deliveryAddress ||
@@ -246,20 +261,36 @@ app.post("/orders", (req, res) =>{
     })
   }
 
-  const restaurant = restaurants.find(
-    (r) => r.id === restaurantId
-  );
+  // const restaurant = restaurants.find(
+  //   (r) => r.id === itemrestaurantId
+  // );
 
-  if(!restaurant) {
-    return res.status(404).json({
-      error:"Restaurant not found."
-    });
-  }
+  // if(!restaurant) {
+  //   return res.status(404).json({
+  //     error:"Restaurant not found."
+  //   });
+  // }
+
+  const isScheduled =
+  scheduledDeliveryTime !== undefined &&
+  scheduledDeliveryTime !== null &&
+  scheduledDeliveryTime !== "";
+
+  const scheduledDate = isScheduled
+  ? new Date(scheduledDeliveryTime)
+  : null;
+
+  const releaseAt = isScheduled
+  ? new Date(
+      scheduledDate.getTime() - 30 * 60 * 1000
+    ).toISOString()
+  : null;
 
   const orderItems = [];
 
   for (const item of items) {
     if(
+      !item.restaurantId ||
       !item.menuItemId ||
       !Number.isInteger(item.quantity) ||
       item.quantity < 1 ||
@@ -271,8 +302,18 @@ app.post("/orders", (req, res) =>{
       });
     }
 
+    const restaurant = restaurants.find(
+      (r) => r.id === String(item.restaurantId)
+    );
+
+    if (!restaurant) {
+      return res.status(400).json({
+        error: `Restaurant ${item.restaurantId} was not found.`,
+      });
+    }
+
     const menuItem = restaurant.menu.find(
-      (m) => m.id === item.menuItemId
+      (m) => m.id === String(item.menuItemId)
     )
 
     if(!menuItem)
@@ -283,6 +324,8 @@ app.post("/orders", (req, res) =>{
     }
 
     orderItems.push({
+      restaurantId: restaurant.id,
+      restaurantName: restaurant.name,
       menuItemId: menuItem.id,
       name: menuItem.name,
       price: menuItem.price,
@@ -294,15 +337,23 @@ app.post("/orders", (req, res) =>{
   const subtotal = orderItems.reduce((sum, item) => sum+item.lineTotal, 0)
   const order = {
     id: String(nextOrderId++),
-    restaurantId: restaurant.id,
-    restautantName: restaurant.name,
+    name: name.trim(),
+    // restaurantId: restaurant.id,
+    // restautantName: restaurant.name,
     items: orderItems,
     deliveryAddress: deliveryAddress.trim(),
     subtotal: subtotal,
-    // deliveryFee: 399,
+    deliveryFee: 399,
     // tax: Math.round(subtotal * 0.08875),
-    status: "pending",
-    createdAt: new Date().toISOString()
+    status: isScheduled ? "scheduled" : "pending",
+    createdAt: new Date().toISOString(),
+    scheduledDeliveryTime: isScheduled
+    ? scheduledDate.toISOString()
+    : null,
+    releaseAt:isScheduled
+    ? releaseAt: null
+
+
   }
   
   // order.total = order.subtotal + order.deliveryFee + order.tax;
@@ -325,6 +376,29 @@ app.get("/orders/:id", (req, res) =>{
   res.json(order);
 })
 
+// PATCH /order/:id/cancel
+app.patch("/orders/:id/cancel", (req, res) => {
+  const order = orders.find((item) => item.id === req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ error: "Order not found." });
+  }
+
+  // Only scheduled orders can be cancelled.
+  if (order.status !== "scheduled") {
+    return res.status(400).json({
+      error: "This order can no longer be cancelled."
+    });
+  }
+
+  order.status = "CANCELLED";
+
+  res.json({
+    message: "Order cancelled successfully.",
+    order
+  });
+});
+
 // PATCH /orders/:id/status
 app.patch("/orders/:id/status", (req, res)=> {
   const order = orders.find((o) => o.id === req.params.id);
@@ -344,7 +418,8 @@ app.patch("/orders/:id/status", (req, res)=> {
     "picked_up",
     "delivered",
     "cancelled",
-    "scheduled"
+    "scheduled",
+    "placed"
   ]
 
   const { status } = req.body;
@@ -360,6 +435,30 @@ app.patch("/orders/:id/status", (req, res)=> {
 
   res.json(order);
 })
+
+
+const clock = {
+  now: () => Date()
+}
+
+const scheduledOrderService = createScheduledOrderService({
+  orders,
+  clock
+});
+
+const scheduler = setInterval(() => {
+  try {
+    const releasedIds =
+      scheduledOrderService.releaseEligibleOrders();
+
+    if (releasedIds.length > 0) {
+      console.log("Released scheduled orders:", releasedIds);
+    }
+  } catch (error) {
+    console.error("Scheduled order release failed:", error);
+  }
+}, 1000);
+
 
 app.listen(PORT, () => {
   console.log(`API running at http://localhost:${PORT}`)

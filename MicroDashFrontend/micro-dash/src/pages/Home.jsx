@@ -6,11 +6,13 @@ import FaveMealComp from '../components/FaveMealComp';
 import { useNavigate } from 'react-router-dom';
 // import CartComp from './components/CartComp';
 // import Cart from '../pages/cart';
+import PropTypes from 'prop-types';
 
+Home.propTypes = {
+  API_URL: PropTypes.string,
+};
 
-const API_URL = "http://localhost:3000";
-
-function Home() {
+function Home({API_URL}) {
   const [restaurants, setRestaurants] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [message, setMessage] = useState("");
@@ -32,7 +34,7 @@ function Home() {
     .then(setRestaurants)
     .catch(() => setMessage("Could not connect to backend."))
     .finally(()=> setLoading(false));
-  }, [])
+  }, [API_URL])
 
 
   async function onclickRestaurant(restaurant)
@@ -51,12 +53,12 @@ function Home() {
     }
   }
 
-  function toLocalDateTimeInput(date) {
-    const offset = date.getTimezoneOffset();
-    return new Date(date.getTime() - offset * 60000)
-      .toISOString()
-      .slice(0, 16);
-  }
+  // function toLocalDateTimeInput(date) {
+  //   const offset = date.getTimezoneOffset();
+  //   return new Date(date.getTime() - offset * 60000)
+  //     .toISOString()
+  //     .slice(0, 16);
+  // }
 
 
   if (loading) return <main className="page"><p>Loading Micro Dash...</p></main>;

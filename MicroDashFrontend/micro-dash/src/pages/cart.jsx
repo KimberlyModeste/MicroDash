@@ -16,7 +16,7 @@ function Cart({API_URL}) {
   const [userName, setUserName] = useState("");
   const [message, setMessage] = useState("");
   const [orderType, setOrderType] = useState("standard");
-  const [deliveryTime, setDeliveryTime] = useState(0);
+  const [deliveryTime, ] = useState(0);
   const [scheduledDeliveryTime, setScheduledDeliveryTime] = useState("");
   // const [message, setMessage] = useState("");
   // const [loading, setLoading] = useState(true);
@@ -31,8 +31,9 @@ function Cart({API_URL}) {
   useEffect(()=>{
     if((!(localStorage.getItem("myCart") === null)) && cart.length === 0)
     {
-      console.log(localStorage.getItem("myCart"))
+      // console.log(localStorage.getItem("myCart"))
       setCart(JSON.parse(localStorage.getItem("myCart")));
+
     }
   }, [cart.length])
 
@@ -60,7 +61,7 @@ function Cart({API_URL}) {
       setMessage("Choose a restaurant and add something to your cart!")
       return;
     }
-    if(orderType === "schedule" && !scheduledDeliveryTime)
+    if(orderType === "scheduled" && !scheduledDeliveryTime)
     {
       setMessage("Please enter a scheduled delivery time.")
       return;
@@ -68,16 +69,86 @@ function Cart({API_URL}) {
     
     setOrdering(true);
     setMessage("");
-    const rID = cart[0].id[0];
-    const schTemp = orderType === "schdule" ?  new Date(scheduledDeliveryTime).toISOString() : ""
+
+    console.log("ordertype", orderType)
+    const schTemp = orderType === "scheduled" ?  new Date(scheduledDeliveryTime).toISOString() : null
 
     try {
+      const restaurants = await fetch(`${API_URL}/restaurants`)
+      .then((res) => {return res.json()})
+
+      const filteredCart = await cart.map((item) =>{
+        const tempRest = restaurants.find((rest) => rest.id === item.resId)
+
+        if(!tempRest.openingHours)
+        {
+          setMessage("There are no opening hours for this restaurant. Cancelling order");
+          return;
+        }
+        if(timeInBetween(tempRest.openingHours.split(" - ")))
+        {
+          return item;
+        }
+        
+      }).filter((item) => item !== undefined)
+      
+      if(filteredCart.length === 0)
+      {
+        setMessage("None of the items can be bought at this time.")
+        return;
+      }
+      if(filteredCart.length !== cart.length)
+      {
+        const notAvailable = cart.filter(item => !filteredCart.some(filt => filt.id === item.id))
+        var mes = "This scheduled time does not allow the food items: "
+        
+        for(var i = 0; i < notAvailable.length; i++)
+        {
+          if(notAvailable.length === 1)
+            mes+= `${notAvailable[i].name}.`
+          else
+          {
+            if(i+1 === notAvailable.length)
+            { 
+              mes = mes.slice(0, -2)
+              mes += ` and ${notAvailable[i].name}. `
+          
+            }
+            else
+              mes += `${notAvailable[i].name}, `
+          }
+          
+        }
+        
+        mes += `Only the food items: `
+        for(i = 0; i < filteredCart.length; i++)
+        {
+          if(filteredCart.length === 1)
+            mes+= `${filteredCart[i].name}.`
+          else{
+            if(i+1 === filteredCart.length)
+            { 
+              mes = mes.slice(0, -2)
+              mes += ` and ${filteredCart[i].name}. `
+          
+            }
+          else
+          {
+            mes += `${filteredCart[i].name}, `
+          }
+          }
+        }
+        console.log(mes)
+        setMessage(mes)
+      }
+
+      filteredCart.map((item)=>console.log(item))
       const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
-          restaurantId: String(rID),
-          items: cart.map((item)=>({
+          items: filteredCart.map((item)=>({
+            restaurantId: String(item.resId),
             menuItemId: String(item.id),
             quantity: item.quantity
           })),
@@ -96,6 +167,7 @@ function Cart({API_URL}) {
       setMessage(
         orderType === "scheduled" ? `Order #${data.id} scheduled successfully!` : `Order #${data.id} placed successfully!`
       );
+      localStorage.removeItem("myCart");
       setCart([]);
       setAddress("");
       setUserName("");
@@ -103,12 +175,100 @@ function Cart({API_URL}) {
       setMessage(error.message ||"Cannot place order. Try again later.")
     } finally {
       setOrdering(false);
-      localStorage.removeItem("myCart");
     }
   }
 
   function goHome() {
 		setMessage("");
+  }
+
+  // async function test() 
+  // {
+  //   try{
+  //     const restaurants = await fetch(`${API_URL}/restaurants`)
+  //     .then((res) => {return res.json()})
+
+  //     const filteredCart = await cart.map((item) =>{
+  //       const tempRest = restaurants.find((rest) => rest.id === item.resId)
+
+  //       if(timeInBetween(tempRest.openingHours.split(" - ")))
+  //       {
+  //         return item;
+  //       }
+        
+  //     }).filter((item) => item !== undefined)
+      
+  //     if(filteredCart.length === 0)
+  //     {
+  //       setMessage("None of the items can be bought at this time.")
+  //       return;
+  //     }
+  //     console.log(filteredCart)
+  //     const notAvailable = cart.filter(item => !filteredCart.some(filt => filt.id === item.id))
+  //     console.log(notAvailable)
+  //     var mes = "This scheduled time does not allow the food items: "
+        
+  //       for(var i = 0; i < notAvailable.length; i++)
+  //       {
+  //         if(notAvailable.length === 1)
+  //           mes+= `${notAvailable[i].name}.`
+  //         else
+  //         {
+  //           if(i+1 === notAvailable.length)
+  //           { 
+  //             mes = mes.slice(0, -2)
+  //             mes += ` and ${notAvailable[i].name}. `
+          
+  //           }
+  //           else
+  //             mes += `${notAvailable[i].name}, `
+  //         }
+          
+  //       }
+        
+  //       mes += `Only the food items: `
+  //       for(i = 0; i < filteredCart.length; i++)
+  //       {
+  //         if(filteredCart.length === 1)
+  //           mes+= `${filteredCart[i].name}.`
+  //         else{
+  //           if(i+1 === filteredCart.length)
+  //           { 
+  //             mes = mes.slice(0, -2)
+  //             mes += ` and ${filteredCart[i].name}. `
+          
+  //           }
+  //         else
+  //         {
+  //           mes += `${filteredCart[i].name}, `
+  //         }
+  //         }
+  //       }
+  //       console.log(mes)
+
+  //   } catch {
+  //     console.log("Not able to")
+  //   }
+
+    
+
+  // }
+
+  function timeInBetween(openingHours)
+  {
+    const schH = Number(scheduledDeliveryTime.split("T")[1].split(":")[0]);
+    const schM = Number(scheduledDeliveryTime.split("T")[1].split(":")[0]);
+
+    const startH = Number(openingHours[0].split(':')[0]);
+    const startM = Number(openingHours[0].split(':')[1].split(' ')[0]);
+    
+    const endH =  openingHours[1].split(':')[1].split(' ')[1] ==="PM" ? Number(openingHours[1].split(':')[0]) + 12 : Number(openingHours[1].split(':')[0]);
+    const endM = Number(openingHours[1].split(':')[1].split(' ')[0]);
+
+    if((startH < schH || (startH === schH && startM <= schM)) && (schH < endH || (schH === endH && schM < endM)))
+      return true;
+
+    return false;
   }
 
   function toLocalDateTimeInput(date) {
@@ -155,14 +315,14 @@ function Cart({API_URL}) {
                       <Radio
                         label='Schedule Order'
                         name='radioGroup'
-                        value='schedule'
-                        checked={orderType === 'schedule'}
+                        value='scheduled'
+                        checked={orderType === 'scheduled'}
                         onChange={(e, {value}) => setOrderType(value)}
                       />
                     </Segment>
                   </SegmentGroup> 
                 </FormField>
-                  {orderType === "schedule" && (
+                  {orderType === "scheduled" && (
                     <FormField>
                       <label htmlFor="scheduledDeliveryTime">
                         Scheduled delivery time
@@ -205,6 +365,9 @@ function Cart({API_URL}) {
                     required
                   />
                 </FormField>
+                {/* <button onClick={() =>test()}>
+                  test
+                </button> */}
                 <button className="checkout-button" disabled={ordering}>
                   {ordering ? "Placing order..." : "Place order"}
                 </button>

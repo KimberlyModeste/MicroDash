@@ -3,7 +3,7 @@ import{ useEffect, useState } from 'react'
 import MyCard from '../components/MyCard'
 import Menubar from '../components/Menubar';
 import FaveMealComp from '../components/FaveMealComp'
-import SidebarCart from '../components/sidebarCart';
+import SidebarCart from '../components/SidebarCart';
 
 
 import PropTypes from 'prop-types'
@@ -59,8 +59,8 @@ function Menu({API_URL}) {
 				cartItem
 			)
 		  }
-		  localStorage.setItem("myCart", JSON.stringify([...currentCart, {...item, quantity: 1}]))
-		  return [...currentCart, {...item, quantity: 1}]
+		  localStorage.setItem("myCart", JSON.stringify([...currentCart, {...item, quantity: 1, resId: rid.id}]))
+		  return [...currentCart, {...item, quantity: 1, resId: rid.id}]
 	
 		})
     changeVisibility(true);
@@ -76,7 +76,6 @@ function Menu({API_URL}) {
   }
 
 	function changeVisibility(val){
-    console.log("Here: ", val)
     setVisible(val)
   }
 
