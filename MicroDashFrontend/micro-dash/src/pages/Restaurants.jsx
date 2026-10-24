@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react'
 import PropTypes from 'prop-types';
 import Menubar from '../components/Menubar';
-import { error } from 'node:console';
+// import { error } from 'node:console';
 
 Restaurants.propTypes = {
   API_URL: PropTypes.string,
@@ -107,7 +107,7 @@ function Restaurants({API_URL}) {
       console.log(res)
       }
       catch {
-        console.log(error.message)
+        console.log("Something has went wrong.")
       }
 
   }

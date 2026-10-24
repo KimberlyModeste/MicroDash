@@ -15,7 +15,7 @@ As a customer, I want to schedule an order for future delivery so that I can pla
 
 1. Given a valid order without a scheduled delivery time, when the customer submits the order, the system creates an immediate order using the existing order workflow.
 2. Given a valid order with a scheduled delivery time, when the customer submits it, the system creates an order with status `SCHEDULED`.
-3. The scheduled order includes a unique order ID, restaurant ID, ordered items, delivery address, scheduled delivery time, and order total.
+3. The scheduled order includes a unique order ID, restaurant ID, ordered items, delivery address, scheduled delivery time, and order total. (Scope changed to have the restaurant Id as a part of the items instead of the order)
 4. The system does not release a newly scheduled order to the restaurant immediately.
 5. A scheduled order request with missing or invalid required order fields is rejected with an appropriate HTTP 400 response and a clear error message.
 6. Successful order creation returns HTTP 201 and the created order details.
@@ -31,7 +31,7 @@ As a customer, I want to schedule an order for future delivery so that I can pla
 3. A delivery time exactly 7 days after T is accepted.
 4. A delivery time more than 7 days after T is rejected.
 5. A delivery time equal to or earlier than T is rejected.
-#### 6. A missing scheduled delivery time is treated as an immediate order, not as a validation failure. ####
+6. A missing scheduled delivery time is treated as an immediate order, not as a validation failure. (Removed from scope by Kimberly)
 7. An unparseable or invalid date/time is rejected with HTTP 400 and a clear error message.
 8. Validation uses the injected clock, not the machine's real system time.
 
