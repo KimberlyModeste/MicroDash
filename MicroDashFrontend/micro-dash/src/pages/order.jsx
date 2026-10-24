@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types';
+import Menubar from '../components/Menubar';
 
 Order.propTypes = {
   API_URL: PropTypes.string,
@@ -11,7 +12,7 @@ function Order({ API_URL }) {
   const [order, setOrder] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const canCancel = order?.status === "SCHEDULED";
+  const canCancel = order?.status === "scheduled";
   
   async function findOrder(event) {
     event.preventDefault();
@@ -71,83 +72,87 @@ function Order({ API_URL }) {
 
   return (
 	  <main className="order-lookup">
-      <h1>Find Your Order</h1>
-      <p>Enter the order number you received at checkout.</p>
+      <Menubar />
+      <div className='order-menu'>
+        <h1>Find Your Order</h1>
+        <p>Enter the order number you received at checkout.</p>
 
-      <form onSubmit={findOrder}>
-        <label htmlFor="orderNumber">Order number</label>
-        <input
-          id="orderNumber"
-          value={orderNumber}
-          onChange={(event) => setOrderNumber(event.target.value)}
-          placeholder="e.g. 1001"
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? "Searching..." : "Find Order"}
-        </button>
-      </form>
+        <form onSubmit={findOrder}>
+          <label className='order-label' htmlFor="orderNumber">Order number: </label>
+          <input
+            id="orderNumber"
+            className='orderNumber'
+            value={orderNumber}
+            onChange={(event) => setOrderNumber(event.target.value)}
+            placeholder="e.g. 1001"
+            required
+          />
+          <button type="submit" disabled={loading} className='order-button'>
+            {loading ? "Searching..." : "Find Order"}
+          </button>
+        </form>
 
-      {message && <p role="status">{message}</p>}
+        {message && <p role="status">{message}</p>}
 
-      {order && (
-        <section className="order-details">
-          <h2>Order #{order.id}</h2>
-          <p>
-            <strong>Status:</strong> {order.status}
-          </p>
-          <p>
-            <strong>Restaurant:</strong>{" "}
-            {order.restaurantName || order.restaurantId}
-          </p>
-          <p>
-            <strong>Delivery address:</strong>{" "}
-            {order.deliveryAddress}
-          </p>
-
-          {order.scheduledDeliveryTime && (
+        {order && (
+          <section className="order-details">
+            <h2>Order #{order.id}</h2>
             <p>
-              <strong>Scheduled delivery:</strong>{" "}
-              {new Date(order.scheduledDeliveryTime).toLocaleString()}
+              <strong>Status: </strong> {order.status.toUpperCase()}
             </p>
-          )}
-
-          {Array.isArray(order.items) && (
-            <div>
-              <h3>Items</h3>
-              <ul>
-                {order.items.map((item, index) => (
-                  <li key={item.menuItemId || item.id || index}>
-                    {item.name || item.menuItemId}
-                    {" — "}Quantity: {item.quantity}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {typeof order.total === "number" && (
             <p>
-              <strong>Total:</strong> ${(order.total / 100).toFixed(2)}
+              <strong>Restaurant: </strong>{" "}
+              {order.restaurantName || order.restaurantId}
             </p>
-          )}
-
-          {canCancel ? (
-            <button
-              type="button"
-              onClick={cancelOrder}
-              disabled={loading}
-              className="cancel-button"
-            >
-              {loading ? "Processing..." : "Cancel Scheduled Order"}
-            </button>
-          ) : (
             <p>
-              This order can no longer be cancelled through this page.
+              <strong>Delivery address: </strong>{" "}
+              {order.deliveryAddress}
             </p>
-          )}
-        </section>
-      )}
+
+            {order.scheduledDeliveryTime && (
+              <p>
+                <strong>Scheduled delivery: </strong>{" "}
+                {new Date(order.scheduledDeliveryTime).toLocaleString()}
+              </p>
+            )}
+
+            {Array.isArray(order.items) && (
+              <div>
+                <h3>Items</h3>
+                <ul>
+                  {order.items.map((item, index) => (
+                    <li key={item.menuItemId || item.id || index}>
+                      {item.name || item.menuItemId}
+                      {" — "}Quantity: {item.quantity}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {typeof order.total === "number" && (
+              <p>
+                <strong>Total:</strong> ${(order.total / 100).toFixed(2)}
+              </p>
+            )}
+
+            {canCancel ? (
+              <button
+                type="button"
+                onClick={cancelOrder}
+                disabled={loading}
+                className="cancel-button"
+              >
+                {loading ? "Processing..." : "Cancel Scheduled Order"}
+              </button>
+            ) : (
+              <p>
+                This order can no longer be cancelled through this page.
+              </p>
+            )}
+          </section>
+        )}
+      </div>
     </main>
   )
 }

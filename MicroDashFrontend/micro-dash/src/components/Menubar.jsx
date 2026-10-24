@@ -35,8 +35,12 @@ function Menubar() {
       <span className='title'>Food out of this world, straight to your hands.</span>
       {/* <div className="cart-count">🛒 {cart.reduce((n, item) => n + item.quantity, 0)}</div> */}
       <div>
-        <Menu compact className='cart-w-notif'  as={Link} to="/cart">
-          <Menu.Item style={{ position: 'relative' }}>
+        <Menu compact className='cart-w-notif' >
+          <Menu.Item style={{ position: 'relative' }} as={Link} to="/orders">
+            <Icon name='file alternate outline' size='large'  />
+            Orders
+          </Menu.Item>
+          <Menu.Item style={{ position: 'relative' }} as={Link} to="/cart">
             <Icon name='shopping cart' size='large' />
             {cart.reduce((n, item) => n + item.quantity, 0) > 0 && (
               <Label color='red' floating circular size='mini'>
@@ -44,6 +48,10 @@ function Menubar() {
               </Label>
             )}
             Cart
+          </Menu.Item>
+          <Menu.Item style={{ position: 'relative' }} as={Link} to="/restaurant/orders">
+            <Icon name='address book outline' size='large'  />
+            Login
           </Menu.Item>
         </Menu>
       </div>

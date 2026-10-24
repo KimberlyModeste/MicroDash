@@ -203,14 +203,19 @@ app.get("/restaurants/:id/menu", (req, res) => {
 
 // GET /Restaurants/:id/orders
 app.get("/Restaurants/:id/orders", (req, res) => {
+  
   const placedOrders = orders.filter(
-    (order) =>{
-      // order.restaurantId === req.params.id &&
+    (order) =>
       // order.status === "placed"
       order.status !== "scheduled" &&
       order.status !== "cancelled"
-    }
-  )
+  ).map(order => ({
+      ...order,
+      items: order.items.filter(
+        item => item.restaurantId === req.params.id
+      )
+    }))
+    .filter(order => order.items.length > 0);
   res.json(placedOrders);
 })
 
@@ -260,16 +265,6 @@ app.post("/orders", (req, res) =>{
       error: "Restaurant, name, items and delivery address are required."
     })
   }
-
-  // const restaurant = restaurants.find(
-  //   (r) => r.id === itemrestaurantId
-  // );
-
-  // if(!restaurant) {
-  //   return res.status(404).json({
-  //     error:"Restaurant not found."
-  //   });
-  // }
 
   const isScheduled =
   scheduledDeliveryTime !== undefined &&
@@ -391,7 +386,7 @@ app.patch("/orders/:id/cancel", (req, res) => {
     });
   }
 
-  order.status = "CANCELLED";
+  order.status = "cancelled";
 
   res.json({
     message: "Order cancelled successfully.",
@@ -436,10 +431,38 @@ app.patch("/orders/:id/status", (req, res)=> {
   res.json(order);
 })
 
-
+let simulatedTime = null;
 const clock = {
-  now: () => Date()
+  now: () => simulatedTime
+    ? new Date(simulatedTime)
+    : new Date()
 }
+
+// POST /clock
+app.post("/clock", (req, res) =>{
+  const minutes = Number(req.body.minutes);
+
+  if (!Number.isFinite(minutes)) {
+    return res.status(400).json({ error: "Invalid minutes" });
+  }
+
+  const currentTime = clock.now();
+  minutes === 0 ?
+  simulatedTime = new Date()
+  :
+  simulatedTime = new Date(
+    currentTime.getTime() + minutes * 60 * 1000
+  );
+
+  const releasedIds = scheduledOrderService.releaseEligibleOrders();
+
+  res.json({
+    simulatedTime: simulatedTime.toISOString(),
+    releasedIds
+  });
+
+})
+
 
 const scheduledOrderService = createScheduledOrderService({
   orders,

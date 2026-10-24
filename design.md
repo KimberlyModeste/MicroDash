@@ -14,3 +14,9 @@
 - Changed the parameters given by the ai to remove the part about if the schedule is blank run it like a normal order
 - Added a function that checks if the scheduled time is valid before sending it to the backend.
 
+## Created the schedule function and basic ui for the orders 
+- Updated the orders UI
+- 
+
+
+The first prompt the outline

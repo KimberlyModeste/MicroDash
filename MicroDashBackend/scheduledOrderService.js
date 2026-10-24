@@ -1,12 +1,13 @@
 
 function createScheduledOrderService({ orders, clock }) {
   function releaseEligibleOrders() {
+    // const now = clock.now;
     const now = clock.now();
     const releasedOrderIds = [];
 
     for (const order of orders) {
       // Only scheduled orders may be released.
-      if (order.status !== "SCHEDULED") {
+      if (order.status !== "scheduled") {
         continue;
       }
 
@@ -22,7 +23,7 @@ function createScheduledOrderService({ orders, clock }) {
 
       // The order becomes eligible exactly at releaseAt.
       if (now.getTime() >= releaseTime.getTime()) {
-        order.status = "PLACED";
+        order.status = "placed";
         order.releasedAt = now.toISOString();
 
         releasedOrderIds.push(order.id);

@@ -132,8 +132,36 @@ button:disabled {
   font-weight: 700;
 }
 
+.order-button{
+  background: #e85d35;
+  color: white;
+  margin: 10px;
+}
+
+.orderNumber{
+  padding: 5px;
+}
+.order-label {
+  font-size: large;
+}
+.order-details{
+  font-size: large;
+  background:#ffeadb;
+  padding: 15px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+li::marker {
+  color: transparent;
+  /* font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center; */
+}
+
 .card-content button:hover,
-.checkout-button:hover {
+.checkout-button:hover,
+.order-button:hover {
   background: #c94825;
 }
 
@@ -250,6 +278,10 @@ button:disabled {
   margin-top: 10px !important;
 }
 
+.restaurant-dashboard{
+  text-align: center;
+  margin-top: 5%;
+}
 
 .notice {
   margin: 20px 0;
@@ -302,13 +334,21 @@ footer {
 
 .cart-w-notif
 {
-  /* pointer-events: none; */
   border: 0px !important;
   box-shadow: none !important;
 }
 
+.order-menu {
+  text-align: center;
+  padding-top: 5%;
+}
+
 .cart-menu{
   margin: 5%;
+}
+
+.cart-empty{
+  text-align: center;
 }
 
 .sidebar-cart{

@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Cart from './pages/Cart';
 import Menu from './pages/menu';
 import Order from './pages/order';
+import Restaurants from './pages/Restaurants';
 
 const API_URL = "http://localhost:3000";
 
@@ -17,6 +18,7 @@ return (
     <Route exact path="/cart" element={<Cart API_URL={API_URL} />} />
     <Route exact path="/restaurants/:id/menu" element={<Menu API_URL={API_URL} />} />
     <Route exact path="/orders" element={<Order API_URL={API_URL} />} />
+    <Route exact path='/restaurant/orders' element={<Restaurants API_URL={API_URL}/>} />
   </Routes>
   </>
   )

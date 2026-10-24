@@ -70,7 +70,7 @@ function Cart({API_URL}) {
     setOrdering(true);
     setMessage("");
 
-    console.log("ordertype", orderType)
+    // console.log("ordertype", orderType)
     const schTemp = orderType === "scheduled" ?  new Date(scheduledDeliveryTime).toISOString() : null
 
     try {
@@ -142,7 +142,7 @@ function Cart({API_URL}) {
         setMessage(mes)
       }
 
-      filteredCart.map((item)=>console.log(item))
+      // filteredCart.map((item)=>console.log(item))
       const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -291,10 +291,10 @@ function Cart({API_URL}) {
       )
     }
     <div className='cart-menu'>
-      <h2>Your order</h2>
+      <h2 className='cart-empty'>Your order</h2>
       { 
         cart.length === 0 ?
-          <p className="muted">Your cart is empty. Add something tasty!</p>
+          <p className="muted cart-empty">Your cart is empty. Add something tasty!</p>
         :
           <SegmentGroup horizontal>
             <Segment>
