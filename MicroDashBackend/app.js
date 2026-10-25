@@ -11,6 +11,13 @@ app.use('/resources', express.static(path.join(__dirname, 'resources')));
 const PORT = 3000;
 const { createScheduledOrderService } =  require("./scheduledOrderService");
 
+let simulatedTime = null;
+const clock = {
+  now: () => simulatedTime
+    ? new Date(simulatedTime)
+    : new Date()
+}
+
 
 // restaurants 
 const restaurants  = [
@@ -199,7 +206,24 @@ app.get("/restaurants", (req, res) => {
 app.get("/restaurants/:id/menu", (req, res) => {
   const restaurant = restaurants.find(
     (r) => r.id === req.params.id
-  );
+);
+
+  if(!restaurant)
+  {
+    return res.status(404).json({
+      error: "Restaurant wasn't found. Sorry."
+    })
+  }
+
+  res.json({
+    restaurantId: restaurant.id,
+    restaurantName: restaurant.name,
+    restaurantCuisine: restaurant.cuisine,
+    restaurantOpeningHours: restaurant.openingHours,
+    restaurantAverage: restaurant.avgPrepTime,
+    menu: restaurant.menu
+  });
+})
 
 // GET /Restaurants/:id/orders
 app.get("/Restaurants/:id/orders", (req, res) => {
@@ -217,23 +241,6 @@ app.get("/Restaurants/:id/orders", (req, res) => {
     }))
     .filter(order => order.items.length > 0);
   res.json(placedOrders);
-})
-
-  if(!restaurant)
-  {
-    return res.status(404).json({
-      error: "Restaurant wasn't found. Sorry."
-    })
-  }
-
-  res.json({
-    restaurantId: restaurant.id,
-    restaurantName: restaurant.name,
-    restaurantCuisine: restaurant.cuisine,
-    restaurantOpeningHours: restaurant.openingHours,
-    restaurantAverage: restaurant.avgPrepTime,
-    menu: restaurant.menu
-  });
 })
 
 
@@ -255,10 +262,7 @@ app.post("/orders", (req, res) =>{
     !deliveryAddress.trim() ||
     !name ||
     typeof name !== "string" ||
-    !name.trim() ||
-    !scheduledDeliveryTime ||
-    typeof scheduledDeliveryTime !== "string" ||
-    !scheduledDeliveryTime.trim()
+    !name.trim()
   )
   {
     return res.status(400).json({
@@ -280,6 +284,14 @@ app.post("/orders", (req, res) =>{
       scheduledDate.getTime() - 30 * 60 * 1000
     ).toISOString()
   : null;
+
+  if (isScheduled && 
+    ( !Number.isFinite(scheduledDate.getTime()) ||
+    scheduledDate.getTime() < clock.now().getTime() + 45 * 60 * 1000 ||
+    scheduledDate.getTime() > clock.now().getTime() + 7 * 24 * 60 * 60 * 1000))
+    {
+      return   res.status(400).json({error: "Scheduled delivery must be between 45 minutes and 7 days from now."});
+    }
 
   const orderItems = [];
 
@@ -333,26 +345,19 @@ app.post("/orders", (req, res) =>{
   const order = {
     id: String(nextOrderId++),
     name: name.trim(),
-    // restaurantId: restaurant.id,
-    // restautantName: restaurant.name,
     items: orderItems,
     deliveryAddress: deliveryAddress.trim(),
     subtotal: subtotal,
     deliveryFee: 399,
-    // tax: Math.round(subtotal * 0.08875),
     status: isScheduled ? "scheduled" : "pending",
-    createdAt: new Date().toISOString(),
+    createdAt: clock.now().toISOString(),
+    // createdAt: new Date().toISOString(),
     scheduledDeliveryTime: isScheduled
     ? scheduledDate.toISOString()
     : null,
-    releaseAt:isScheduled
-    ? releaseAt: null
-
-
+    releaseAt:isScheduled ? releaseAt : null
   }
   
-  // order.total = order.subtotal + order.deliveryFee + order.tax;
-
   orders.push(order);
   res.status(201).json(order);
 })
@@ -431,28 +436,19 @@ app.patch("/orders/:id/status", (req, res)=> {
   res.json(order);
 })
 
-let simulatedTime = null;
-const clock = {
-  now: () => simulatedTime
-    ? new Date(simulatedTime)
-    : new Date()
-}
-
 // POST /clock
 app.post("/clock", (req, res) =>{
   const minutes = Number(req.body.minutes);
 
-  if (!Number.isFinite(minutes)) {
+  if (!Number.isFinite(minutes) || minutes < 0) {
     return res.status(400).json({ error: "Invalid minutes" });
   }
 
   const currentTime = clock.now();
-  minutes === 0 ?
-  simulatedTime = new Date()
-  :
-  simulatedTime = new Date(
-    currentTime.getTime() + minutes * 60 * 1000
-  );
+
+  simulatedTime = minutes === 0 
+  ? new Date ()
+  : currentTime.getTime() + minutes * 60000
 
   const releasedIds = scheduledOrderService.releaseEligibleOrders();
 

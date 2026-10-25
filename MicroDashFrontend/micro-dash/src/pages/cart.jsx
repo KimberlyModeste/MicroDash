@@ -71,7 +71,7 @@ function Cart({API_URL}) {
     setMessage("");
 
     // console.log("ordertype", orderType)
-    const schTemp = orderType === "scheduled" ?  new Date(scheduledDeliveryTime).toISOString() : null
+    const schTemp = orderType === "scheduled" ?  new Date(scheduledDeliveryTime).toISOString() : ""
 
     try {
       const restaurants = await fetch(`${API_URL}/restaurants`)

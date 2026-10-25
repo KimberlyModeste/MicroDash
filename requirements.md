@@ -31,7 +31,7 @@ As a customer, I want to schedule an order for future delivery so that I can pla
 3. A delivery time exactly 7 days after T is accepted.
 4. A delivery time more than 7 days after T is rejected.
 5. A delivery time equal to or earlier than T is rejected.
-6. A missing scheduled delivery time is treated as an immediate order, not as a validation failure. (Removed from scope by Kimberly)
+6. A missing scheduled delivery time is treated as an immediate order, not as a validation failure. (Removed from scope)
 7. An unparseable or invalid date/time is rejected with HTTP 400 and a clear error message.
 8. Validation uses the injected clock, not the machine's real system time.
 
@@ -75,7 +75,7 @@ As a customer, I want to schedule an order for future delivery so that I can pla
 3. A cancelled order is excluded from future release processing.
 4. Repeated cancellation requests do not cause additional state transitions or releases.
 5. Given an order is already in status `PLACED`, cancellation through the scheduled-order cancellation operation is rejected with a clear error.
-6. Attempting to cancel an order that does not exist returns HTTP 404.
+6. Attempting to cancel an order that does not exist returns HTTP 404. (Removed from scope)
 7. Cancellation eligibility is evaluated using the injected clock and the order's current status.
 
 ### US-06 — Make time-dependent behavior testable

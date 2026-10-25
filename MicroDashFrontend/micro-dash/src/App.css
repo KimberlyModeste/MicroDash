@@ -412,6 +412,53 @@ footer {
   align:
 } */
 
+.order-lookup,
+.restaurant-dashboard {
+  max-width: 850px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+}
+
+.order-lookup form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.order-lookup input,
+.restaurant-dashboard select {
+  padding: 0.65rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.order-lookup button,
+.restaurant-dashboard button {
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+}
+
+.order-details,
+.restaurant-order {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.cancel-button {
+  background: #b42318;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.restaurant-order-list {
+  display: grid;
+  gap: 1rem;
+}
+
 @media (max-width: 800px) {
   .order-layout {
     grid-template-columns: 1fr;

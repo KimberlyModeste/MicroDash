@@ -15,7 +15,7 @@ function Restaurants({API_URL}) {
   const [orders, setOrders] = useState([]);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  // const [timeChange, setTimeChange] = useState("");
+  const [timeChange, setTimeChange] = useState(0);
 
   // useEffect(() => {
   //   const input = prompt("Please enter the password to access this page:");
@@ -43,7 +43,7 @@ function Restaurants({API_URL}) {
           setRestaurantId(String(data[0].id));
         }
       } catch (error) {
-        setMessage(error.message);
+        console.log(error.message);
       }
     }
 
@@ -76,7 +76,7 @@ function Restaurants({API_URL}) {
           setMessage("");
         }
       } catch (error) {
-        if (active) setMessage(error.message);
+        if (active) console.log(error.message);
       } finally {
         if (active) setLoading(false);
       }
@@ -106,8 +106,8 @@ function Restaurants({API_URL}) {
       })
       console.log(res)
       }
-      catch {
-        console.log("Something has went wrong.")
+      catch(error) {
+        console.log(error.message)
       }
 
   }
@@ -122,12 +122,18 @@ function Restaurants({API_URL}) {
 	  <main className="restaurant-dashboard">
       <h1>Restaurant Order Dashboard</h1>
       <p>New orders refresh automatically every five seconds.</p>
-      <div style={{padding: "10px"}}>
-        <button onClick={()=>changeTime(0)}>
-          Reset
-        </button>
-        <button onClick={()=>changeTime(30)}>
-          + 30 Minutes
+      <div style={{padding: "10px", fontSize: "large"}}>
+        <label>Input minutes: </label>
+        <input
+          id="timeChange"
+          className='timeChange'
+          value={timeChange}
+          onChange={(event) => setTimeChange(event.target.value)}
+          type='number'
+          required
+        />
+        <button type='submit' style={{background: "antiquewhite", margin: "10px"}} onClick={()=>changeTime(timeChange)}>
+          Submit
         </button>
       </div>
       <label className='order-label' htmlFor="restaurant">Choose restaurant: </label>
