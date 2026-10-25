@@ -1,4 +1,5 @@
 # How to do the thing
+<H1>IF DOING TESTS ONLY DO IT IRL BETWEEN 11 AND 8 <H1>
 
 1. Download the zip file.
 2. Extract the zipfile.
