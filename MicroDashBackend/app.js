@@ -448,7 +448,7 @@ app.post("/clock", (req, res) =>{
 
   simulatedTime = minutes === 0 
   ? new Date ()
-  : currentTime.getTime() + minutes * 60000
+  : new Date(currentTime.getTime() + minutes * 60000)
 
   const releasedIds = scheduledOrderService.releaseEligibleOrders();
 
