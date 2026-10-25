@@ -101,7 +101,7 @@ test("Three scheduled orders for the next three days for the same time with item
   let items;
 
   for (let i = 0; i < 3; i++) {
-    const deliveryTime = new Date(now.getTime() + 60 * 60 * 1000 * (deliveryHours[i] + 12)).toISOString();
+    const deliveryTime = new Date(now.getTime() + 60 * 60 * 1000 * (deliveryHours[i])).toISOString();
     items = [];
 
     switch (i) {
@@ -440,7 +440,7 @@ test("Restaurants only see their own items from a shared order", async ({
   const order = await createResponse.json();
 
   const restaurantOneResponse = await request.get(`${API_URL}/restaurants/1/orders`);
-  const restaurantTwoResponse = await request.get(`${API_URL}/restaurants/2/orders`);
+  const restaurantTwoResponse = await request.get(`${API_URL}/restaurants/4/orders`);
 
   const restaurantOneOrders = await restaurantOneResponse.json();
   const restaurantTwoOrders = await restaurantTwoResponse.json();
